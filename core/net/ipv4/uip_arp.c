@@ -171,19 +171,14 @@ uip_arp_update(uip_ipaddr_t *ipaddr, struct uip_eth_addr *ethaddr)
   for(i = 0; i < UIP_ARPTAB_SIZE; ++i) {
     tabptr = &arp_table[i];
 
-    /* Only check those entries that are actually in use. */
-    if(!uip_ipaddr_cmp(&tabptr->ipaddr, &uip_all_zeroes_addr)) {
-
-      /* Check if the source IP address of the incoming packet matches
+/* Check if the source IP address of the incoming packet matches
          the IP address in this ARP table entry. */
-      if(uip_ipaddr_cmp(ipaddr, &tabptr->ipaddr)) {
-	 
-	/* An old entry found, update this and return. */
+    if(uip_ipaddr_cmp(ipaddr, &tabptr->ipaddr)) {
+  /* An old entry found, update this and return. */
 	memcpy(tabptr->ethaddr.addr, ethaddr->addr, 6);
 	tabptr->time = arptime;
 
 	return;
-      }
     }
 	tabptr++;
   }
